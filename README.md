@@ -36,3 +36,10 @@ encoders or decoders that use a different tail convention (some pad with `u`
 on encode, others with `!`) may see mismatches on inputs whose length is not a
 multiple of four. This library is internally consistent: `decode(encode(x)) ==
 x` for every `bytes` input.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
